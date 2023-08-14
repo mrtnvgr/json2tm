@@ -1,0 +1,25 @@
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout Repository"
+        uses: actions/checkout@main
+
+      - name: "Login to Github Container Registry"
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: mrtnvgr
+          password: ${{secrets.GITHUB_TOKEN}}
+
+      - name: "Build"
+        run: |
+          docker build . --tag ghcr.io/mrtnvgr/json2tm:latest
+
+      - name: "Publish"
+        run: |
+          docker push ghcr.io/mrtnvgr/json2tm:latest
