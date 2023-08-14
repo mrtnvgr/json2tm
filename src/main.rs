@@ -17,7 +17,7 @@ fn main() {
 
     let json_reader = File::open(args.json).unwrap();
     let json_stripped = StripComments::new(json_reader);
-    let json: vscode::Theme = serde_json::from_reader(json_stripped).unwrap();
+    let json: vscode::Theme = serde_yaml::from_reader(json_stripped).unwrap();
 
     let mut tm = tm::Theme::new(json.name.clone());
     tm.push_anon(&json.colors);
