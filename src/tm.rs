@@ -30,13 +30,13 @@ pub struct AnonSetting {
 
 #[derive(Serialize)]
 pub struct AnonSettingSetting {
-    pub background: String,
-    pub caret: String,
-    pub foreground: String,
-    pub invisibles: String,
+    pub background: Option<String>,
+    pub caret: Option<String>,
+    pub foreground: Option<String>,
+    pub invisibles: Option<String>,
     #[serde(rename = "lineHighlight")]
-    pub line_highlight: String,
-    pub selection: String,
+    pub line_highlight: Option<String>,
+    pub selection: Option<String>,
 }
 
 impl Theme {
@@ -52,12 +52,12 @@ impl Theme {
     #[allow(clippy::indexing_slicing)]
     pub fn push_anon(&mut self, colors: &HashMap<String, String>) {
         let anon_settings = AnonSettingSetting {
-            background: colors["editor.background"].clone(),
-            caret: colors["editorCursor.foreground"].clone(),
-            foreground: colors["editor.foreground"].clone(),
-            invisibles: colors["editorWhitespace.foreground"].clone(),
-            line_highlight: colors["editor.lineHighlightBackground"].clone(),
-            selection: colors["editor.selectionBackground"].clone(),
+            background: colors.get("editor.background").cloned(),
+            caret: colors.get("editorCursor.foreground").cloned(),
+            foreground: colors.get("editor.foreground").cloned(),
+            invisibles: colors.get("editorWhitespace.foreground").cloned(),
+            line_highlight: colors.get("editor.lineHighlightBackground").cloned(),
+            selection: colors.get("editor.selectionBackground").cloned(),
         };
 
         self.settings.push(Setting::AnonSetting(AnonSetting {

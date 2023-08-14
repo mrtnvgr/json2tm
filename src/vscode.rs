@@ -12,7 +12,7 @@ pub struct Theme {
 #[derive(Deserialize, Clone)]
 pub struct Color {
     pub name: Option<String>,
-    pub scope: StringOrStringVec,
+    pub scope: Option<StringOrStringVec>,
     pub settings: HashMap<String, String>,
 }
 

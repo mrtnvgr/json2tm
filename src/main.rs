@@ -1,4 +1,5 @@
 use clap::Parser;
+use json_comments::StripComments;
 use std::{fs::File, path::PathBuf};
 use tm::{NormalSetting, Setting};
 
@@ -15,21 +16,22 @@ fn main() {
     let args = Args::parse();
 
     let json_reader = File::open(args.json).unwrap();
-    let json: vscode::Theme = serde_json::from_reader(json_reader).unwrap();
+    let json_stripped = StripComments::new(json_reader);
+    let json: vscode::Theme = serde_json::from_reader(json_stripped).unwrap();
 
     let mut tm = tm::Theme::new(json.name.clone());
     tm.push_anon(&json.colors);
 
     for token in json.token_colors {
-        let scope = token.scope.to_string();
+        if let Some(scope) = token.scope {
+            let setting = NormalSetting {
+                name: token.name.unwrap_or_default(),
+                scope: scope.to_string(),
+                settings: token.settings,
+            };
 
-        let setting = NormalSetting {
-            name: token.name.unwrap_or_default(),
-            scope,
-            settings: token.settings,
-        };
-
-        tm.settings.push(Setting::NormalSetting(setting));
+            tm.settings.push(Setting::NormalSetting(setting));
+        }
     }
 
     plist::to_file_xml(args.tm, &tm).unwrap();
