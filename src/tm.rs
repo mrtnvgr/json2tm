@@ -49,7 +49,6 @@ impl Theme {
         }
     }
 
-    #[allow(clippy::indexing_slicing)]
     pub fn push_anon(&mut self, colors: &HashMap<String, String>) {
         let anon_settings = AnonSettingSetting {
             background: colors.get("editor.background").cloned(),
