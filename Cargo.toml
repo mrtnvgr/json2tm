@@ -1,6 +1,6 @@
 [package]
 name = "json2tm"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 description = "VSCode compiled theme -> .tmTheme converter"
 license = "GPL-3.0"
